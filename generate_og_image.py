@@ -8,10 +8,10 @@ import sys
 WIDTH = 1200
 HEIGHT = 630
 
-# Colors
-BACKGROUND = "#1a1f36"  # Dark blue background
+# Colors - matching website theme
+BACKGROUND = "#b32d2d"  # Red background (matching site primary color)
 TEXT_COLOR = "#ffffff"  # White text
-ACCENT_COLOR = "#4f46e5"  # Indigo accent
+ACCENT_COLOR = "#fde0e0"  # Light accent (matching site accent color)
 
 # Batak Toba text
 BATAK_TEXT = "ᯅ ᯖ ᯂ᯲ ᯖᯬ ᯅ"
