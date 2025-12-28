@@ -32,15 +32,33 @@ def create_og_image():
         'tagline': 40
     }
     
-    try:
-        # Try to use system fonts that might support Batak script
-        # macOS often has good Unicode support in system fonts
-        batak_font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Unicode.ttf", font_sizes['batak'])
-    except:
+    # Try to load Noto Sans Batak font
+    font_paths = [
+        "NotoSansBatak-Regular.ttf",  # Current directory
+        "/System/Library/Fonts/Supplemental/NotoSansBatak-Regular.ttf",
+        "/Library/Fonts/NotoSansBatak-Regular.ttf",
+        "~/Library/Fonts/NotoSansBatak-Regular.ttf",
+    ]
+    
+    batak_font = None
+    for font_path in font_paths:
         try:
-            batak_font = ImageFont.truetype("/Library/Fonts/Arial Unicode.ttf", font_sizes['batak'])
+            batak_font = ImageFont.truetype(font_path, font_sizes['batak'])
+            print(f"Using font: {font_path}")
+            break
         except:
-            # Fallback to default
+            continue
+    
+    if batak_font is None:
+        print("Warning: Noto Sans Batak font not found. Downloading...", file=sys.stderr)
+        import urllib.request
+        font_url = "https://github.com/notofonts/batak/raw/main/fonts/NotoSansBatak/full/ttf/NotoSansBatak-Regular.ttf"
+        try:
+            urllib.request.urlretrieve(font_url, "NotoSansBatak-Regular.ttf")
+            batak_font = ImageFont.truetype("NotoSansBatak-Regular.ttf", font_sizes['batak'])
+            print("Successfully downloaded and loaded Noto Sans Batak font.")
+        except Exception as e:
+            print(f"Failed to download font: {e}", file=sys.stderr)
             batak_font = ImageFont.load_default()
             print("Warning: Using default font. Batak characters may not display correctly.", file=sys.stderr)
     
